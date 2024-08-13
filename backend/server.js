@@ -1,5 +1,6 @@
 require("dotenv").config();
 var express = require("express");
+const mongoose = require("mongoose");
 var app = express();
 
 //connecting to the router
@@ -20,6 +21,12 @@ app.get("/", (req, res) => {
 app.use("/api/blog", blogRouter);
 
 var port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log("Server is running on port " + port);
-});
+mongoose
+  .connect(process.env.Mongodb_Database)
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(port, () => {
+      console.log("Server is running on port " + port);
+    });
+  })
+  .catch((err) => console.error(err.message));
