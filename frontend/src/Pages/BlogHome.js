@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const BlogHome = () => {
   const [blogs, setBlogs] = useState(null);
@@ -21,11 +22,14 @@ const BlogHome = () => {
       <div>
         {blogs &&
           blogs.map((blog) => (
-            <div className="border border-lime-400 my-4 p-2 rounded">
+            <div
+              className="border border-lime-400 my-4 p-2 rounded"
+              key={blog._id}
+            >
               <h1 className="font-semibold">{blog.title}</h1>
               <p className="line-clamp-3">{blog.body}</p>
               <button className="bg-emerald-800 text-white py-2 px-4 rounded mt-2">
-                Read Full Blog
+                <Link to={"/featuredblogs/" + blog._id}>Read Full Blog</Link>
               </button>
             </div>
           ))}
