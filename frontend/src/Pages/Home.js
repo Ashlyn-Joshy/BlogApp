@@ -1,9 +1,13 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div>
-      <h1>The Home page of Blog App</h1>
+    <div className="p-5">
+      <h1>The Landing of Blog App</h1>
+      <button>
+        <Link to={"/featuredblogs"}>View Blogs</Link>
+      </button>
     </div>
   );
 };

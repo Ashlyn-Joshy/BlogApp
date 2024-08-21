@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footbar from "./components/Footbar";
 import Home from "./Pages/Home";
+import BlogHome from "./Pages/BlogHome";
 
 const AppComponent = () => {
   return (
@@ -23,6 +24,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/featuredblogs",
+        element: <BlogHome />,
       },
     ],
   },
