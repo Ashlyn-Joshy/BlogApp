@@ -8,6 +8,7 @@ import BlogHome from "./Pages/BlogHome";
 import SingleBlog from "./Pages/SingleBlog";
 import AddBlog from "./Pages/AddBlog";
 import EditBlog from "./Pages/EditBlog";
+import ErrorPage from "./Pages/ErrorPage";
 
 const AppComponent = () => {
   return (
@@ -23,6 +24,7 @@ const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <AppComponent />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
