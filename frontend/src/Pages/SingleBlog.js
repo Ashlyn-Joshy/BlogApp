@@ -55,6 +55,9 @@ const SingleBlog = () => {
             >
               Delete
             </button>
+            <button className="bg-emerald-800 text-white rounded py-2 px-4 font-semibold ml-2">
+              <Link to={`/editblog/${blog._id}`}>Edit</Link>
+            </button>
           </div>
           <p className="py-2">{blog.body}</p>
           <button className="bg-emerald-800 text-white rounded py-2 px-4 font-semibold">

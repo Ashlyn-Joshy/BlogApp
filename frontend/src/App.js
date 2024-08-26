@@ -7,6 +7,7 @@ import Home from "./Pages/Home";
 import BlogHome from "./Pages/BlogHome";
 import SingleBlog from "./Pages/SingleBlog";
 import AddBlog from "./Pages/AddBlog";
+import EditBlog from "./Pages/EditBlog";
 
 const AppComponent = () => {
   return (
@@ -38,6 +39,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/addblog",
         element: <AddBlog />,
+      },
+      {
+        path: "/editblog/:id",
+        element: <EditBlog />,
       },
     ],
   },
