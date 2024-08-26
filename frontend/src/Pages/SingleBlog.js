@@ -1,13 +1,27 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatRelative, subDays } from "date-fns";
 import useFeach from "../Hooks/useFeach";
 
 const SingleBlog = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   //fetch the blog data
   const { blogs: blog, error } = useFeach(`/api/blog/${id}`);
+
+  //deleting the current blog
+  const handleDelete = async () => {
+    const article = await fetch(`/api/blog/${blog._id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (article.ok) {
+      navigate("/featuredblogs");
+    }
+  };
 
   //if there is any kind of error
   if (error) {
@@ -34,6 +48,14 @@ const SingleBlog = () => {
           <h4 className="text-center">
             {formatRelative(subDays(new Date(blog.createdAt), 3), new Date())}
           </h4>
+          <div className="text-right">
+            <button
+              className="bg-red-500 text-white rounded py-2 px-4 font-semibold"
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
+          </div>
           <p className="py-2">{blog.body}</p>
           <button className="bg-emerald-800 text-white rounded py-2 px-4 font-semibold">
             <Link to={"/featuredblogs"}>Back</Link>
