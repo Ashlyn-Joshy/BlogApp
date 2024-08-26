@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
-const BlogHome = () => {
-  const [blogs, setBlogs] = useState(null);
-  //feaching all the blog data
-  useEffect(() => {
-    const blogData = async () => {
-      const result = await fetch("/api/blog");
-      const data = await result.json();
+import useFeach from "../Hooks/useFeach";
 
-      setBlogs(data);
-    };
-    blogData();
-  }, []);
+const BlogHome = () => {
+  //feaching all the blog data
+  const { blogs } = useFeach("/api/blog");
 
   return (
     <div className="p-10">
