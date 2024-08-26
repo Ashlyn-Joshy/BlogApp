@@ -6,6 +6,7 @@ import Footbar from "./components/Footbar";
 import Home from "./Pages/Home";
 import BlogHome from "./Pages/BlogHome";
 import SingleBlog from "./Pages/SingleBlog";
+import AddBlog from "./Pages/AddBlog";
 
 const AppComponent = () => {
   return (
@@ -33,6 +34,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/featuredblogs/:id",
         element: <SingleBlog />,
+      },
+      {
+        path: "/addblog",
+        element: <AddBlog />,
       },
     ],
   },

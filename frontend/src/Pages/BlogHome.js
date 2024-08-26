@@ -13,6 +13,9 @@ const BlogHome = () => {
         Featured Blogs
       </h1>
       <div>
+        <button className="bg-emerald-800 text-white py-2 px-4 rounded mt-2">
+          <Link to={"/addblog"}>Write</Link>
+        </button>
         {blogs &&
           blogs.map((blog) => (
             <div
