@@ -1,10 +1,12 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogout } from "../Hooks/useLogout";
+import { useAuthContext } from "../Hooks/useAuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { logout } = useLogout();
+  const { user } = useAuthContext();
 
   const handleLogout = () => {
     logout();
@@ -20,18 +22,32 @@ const Navbar = () => {
           </Link>
         </div>
         <div>
-          <button
-            className="text-white rounded bg-emerald-800 px-4 py-2"
-            onClick={handleLogout}
-          >
-            Log Out
-          </button>
-          <Link to={"/register"}>
-            <span className="text-emerald-800 font-semibold">Register</span>
-          </Link>
-          <Link to={"/login"}>
-            <span className="text-emerald-800 font-semibold ml-2">Login</span>
-          </Link>
+          {user && (
+            <>
+              <span className="text-emerald-800 font-semibold">
+                Hello {user.email}
+              </span>
+              <button
+                className="text-white rounded bg-emerald-800 px-4 py-2 ml-2"
+                onClick={handleLogout}
+              >
+                Log Out
+              </button>
+            </>
+          )}
+
+          {!user && (
+            <>
+              <Link to={"/register"}>
+                <span className="text-emerald-800 font-semibold">Register</span>
+              </Link>
+              <Link to={"/login"}>
+                <span className="text-emerald-800 font-semibold ml-2">
+                  Login
+                </span>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>
