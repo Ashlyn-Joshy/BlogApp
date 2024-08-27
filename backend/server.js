@@ -5,6 +5,7 @@ var app = express();
 
 //connecting to the router
 var blogRouter = require("./router/blogs");
+var userRouter = require("./router/user");
 
 //middleware
 app.use(express.json());
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
   res.json({ msg: "Hello world! welcome to the blog application!" });
 });
 app.use("/api/blog", blogRouter);
+app.use("/api/user", userRouter);
 
 var port = process.env.PORT || 3000;
 mongoose
