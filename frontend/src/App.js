@@ -9,6 +9,7 @@ import SingleBlog from "./Pages/SingleBlog";
 import AddBlog from "./Pages/AddBlog";
 import EditBlog from "./Pages/EditBlog";
 import ErrorPage from "./Pages/ErrorPage";
+import Register from "./Pages/Register";
 
 const AppComponent = () => {
   return (
@@ -45,6 +46,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/editblog/:id",
         element: <EditBlog />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
     ],
   },
