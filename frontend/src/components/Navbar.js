@@ -1,7 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogout } from "../Hooks/useLogout";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const { logout } = useLogout();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <nav className="py-5 shadow-lg">
       <div className="flex flex-row justify-between px-10">
@@ -11,6 +20,12 @@ const Navbar = () => {
           </Link>
         </div>
         <div>
+          <button
+            className="text-white rounded bg-emerald-800 px-4 py-2"
+            onClick={handleLogout}
+          >
+            Log Out
+          </button>
           <Link to={"/register"}>
             <span className="text-emerald-800 font-semibold">Register</span>
           </Link>
