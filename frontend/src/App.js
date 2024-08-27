@@ -10,6 +10,7 @@ import AddBlog from "./Pages/AddBlog";
 import EditBlog from "./Pages/EditBlog";
 import ErrorPage from "./Pages/ErrorPage";
 import Register from "./Pages/Register";
+import Login from "./Pages/Login";
 
 const AppComponent = () => {
   return (
@@ -50,6 +51,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
     ],
   },
