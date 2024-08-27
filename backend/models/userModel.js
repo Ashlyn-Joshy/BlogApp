@@ -43,4 +43,20 @@ userSchema.statics.Register = async function (name, email, password) {
   return user;
 };
 
+//static login method
+userSchema.statics.login = async function (email, password) {
+  if (!email || !password) {
+    throw new Error("All fields are required");
+  }
+  const existingUser = await this.findOne({ email });
+  if (!existingUser) {
+    throw new Error("Invalid email");
+  }
+  const isMatchPassword = await bcrypt.compare(password, existingUser.password);
+  if (!isMatchPassword) {
+    throw new Error("Invalid password");
+  }
+  return existingUser;
+};
+
 module.exports = mongoose.model("User", userSchema);
