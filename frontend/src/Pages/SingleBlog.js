@@ -30,6 +30,12 @@ const SingleBlog = () => {
     }
   };
 
+  const handleEdit = () => {
+    if (!user) {
+      navigate("/login");
+    }
+  };
+
   //if there is any kind of error
   if (error) {
     return (
@@ -62,7 +68,10 @@ const SingleBlog = () => {
             >
               Delete
             </button>
-            <button className="bg-emerald-800 text-white rounded py-2 px-4 font-semibold ml-2">
+            <button
+              className="bg-emerald-800 text-white rounded py-2 px-4 font-semibold ml-2"
+              onClick={handleEdit}
+            >
               <Link to={`/editblog/${blog._id}`}>Edit</Link>
             </button>
           </div>
