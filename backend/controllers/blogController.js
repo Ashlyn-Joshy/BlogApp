@@ -15,7 +15,9 @@ module.exports.allBlog = async (req, res) => {
 
 //new blog
 module.exports.newBlog = async (req, res) => {
-  const { title, author, body } = req.body;
+  const { title, body } = req.body;
+  const author = req.user.name;
+
   try {
     const blog = await Blog.create({ title, author, body });
     res.status(200).json(blog);
@@ -43,7 +45,10 @@ module.exports.updateBlog = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ msg: "Blog not found" });
   }
-  const blog = await Blog.findOneAndUpdate({ _id: id }, { ...req.body });
+  const update = { ...req.body };
+  delete update.author; //not able to update author data
+
+  const blog = await Blog.findOneAndUpdate({ _id: id }, update);
   if (!blog) {
     return res.status(400).json({ msg: "Blog not found" });
   }

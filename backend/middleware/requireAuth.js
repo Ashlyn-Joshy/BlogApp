@@ -10,7 +10,7 @@ const requireAuth = async (req, res, next) => {
   const token = authorization.split(" ")[1];
   try {
     const { _id } = jwt.verify(token, process.env.JWT_secret);
-    req.user = await User.findById({ _id }).select("_id");
+    req.user = await User.findById({ _id }).select("_id name email");
     next();
   } catch (error) {
     res.status(403).json({ error: "Invalid authorization token" });

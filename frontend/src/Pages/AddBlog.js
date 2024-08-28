@@ -6,7 +6,6 @@ const AddBlog = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [author, setAuthor] = useState("");
   const [error, setError] = useState(null);
   const { user } = useAuthContext();
 
@@ -20,7 +19,7 @@ const AddBlog = () => {
       return;
     }
 
-    const blog = { title, body, author };
+    const blog = { title, body, author: user.name || user.email };
 
     const article = await fetch(`/api/blog`, {
       method: "POST",
@@ -38,7 +37,6 @@ const AddBlog = () => {
     } else {
       setTitle("");
       setBody("");
-      setAuthor("");
       setError(null);
       navigate(`/featuredblogs/${json._id}`);
     }
@@ -83,16 +81,6 @@ const AddBlog = () => {
             value={body}
             onChange={(e) => setBody(e.target.value)}
           ></textarea>
-        </div>
-        <div>
-          <label className="text-2xl font-bold text-emerald-800">Author</label>
-          <br />
-          <input
-            type="text"
-            className="outline outline-lime-100 rounded w-full"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          ></input>
         </div>
         <div className="pt-4 text-center">
           <button
