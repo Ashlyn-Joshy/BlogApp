@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../Hooks/useAuthContext";
 
 const AddBlog = () => {
   const navigate = useNavigate();
@@ -7,15 +8,25 @@ const AddBlog = () => {
   const [body, setBody] = useState("");
   const [author, setAuthor] = useState("");
   const [error, setError] = useState(null);
+  const { user } = useAuthContext();
 
   const handlePublish = async (e) => {
     e.preventDefault();
+
+    //if user is not logged in
+    if (!user) {
+      setError("You need to be logged in to create a blog");
+      navigate("/login");
+      return;
+    }
+
     const blog = { title, body, author };
 
     const article = await fetch(`/api/blog`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
       },
       body: JSON.stringify(blog),
     });

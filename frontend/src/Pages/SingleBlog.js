@@ -2,20 +2,27 @@ import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatRelative, subDays } from "date-fns";
 import useFeach from "../Hooks/useFeach";
+import { useAuthContext } from "../Hooks/useAuthContext";
 
 const SingleBlog = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuthContext();
 
   //fetch the blog data
   const { blogs: blog, error } = useFeach(`/api/blog/${id}`);
 
   //deleting the current blog
   const handleDelete = async () => {
+    if (!user) {
+      return;
+    }
+
     const article = await fetch(`/api/blog/${blog._id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
       },
     });
     if (article.ok) {

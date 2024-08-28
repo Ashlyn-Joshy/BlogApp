@@ -8,11 +8,12 @@ const blogController = require("../controllers/blogController");
 const requireAuth = require("../middleware/requireAuth");
 
 router.get("/", blogController.allBlog);
+router.get("/:id", blogController.singleBlog);
+
 //authentication is needed
 router.use(requireAuth);
 
 router.post("/", blogController.newBlog);
-router.get("/:id", blogController.singleBlog);
 router.put("/:id", blogController.updateBlog);
 router.delete("/:id", blogController.deleteBlog);
 

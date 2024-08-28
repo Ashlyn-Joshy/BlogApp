@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import useFeach from "../Hooks/useFeach";
+import { useAuthContext } from "../Hooks/useAuthContext";
 
 const EditBlog = () => {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ const EditBlog = () => {
   const [body, setBody] = useState("");
   const [author, setAuthor] = useState("");
   const [error, setError] = useState(null);
+  const { user } = useAuthContext();
 
   //fetching the blog data
   const { blogs: blog } = useFeach(`/api/blog/${id}`);
@@ -23,11 +25,18 @@ const EditBlog = () => {
 
   const handleEdit = async (e) => {
     e.preventDefault();
+
+    if (!user) {
+      setError("You need to be logged in to edit blog.");
+      return;
+    }
+
     try {
       const response = await fetch(`/api/blog/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
         body: JSON.stringify({ title, body, author }),
       });
