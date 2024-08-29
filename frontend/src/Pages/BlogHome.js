@@ -36,7 +36,7 @@ const BlogHome = () => {
               className="border border-lime-400 my-4 p-2 rounded"
               key={blog._id}
             >
-              <h1 className="font-semibold">{blog.title}</h1>
+              <h1 className="font-semibold uppercase">{blog.title}</h1>
               <p className="line-clamp-3">{blog.body}</p>
               <button className="bg-emerald-800 text-white py-2 px-4 rounded mt-2">
                 <Link to={"/featuredblogs/" + blog._id}>Read Full Blog</Link>

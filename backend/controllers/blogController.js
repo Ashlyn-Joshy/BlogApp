@@ -17,9 +17,10 @@ module.exports.allBlog = async (req, res) => {
 module.exports.newBlog = async (req, res) => {
   const { title, body } = req.body;
   const author = req.user.name;
+  const blogOwner = req.user._id;
 
   try {
-    const blog = await Blog.create({ title, author, body });
+    const blog = await Blog.create({ title, author, body, blogOwner });
     res.status(200).json(blog);
   } catch (error) {
     res.status(400).json({ msg: error.message });
@@ -45,14 +46,24 @@ module.exports.updateBlog = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ msg: "Blog not found" });
   }
+
+  const blog = await Blog.findById(id);
+  if (!blog) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+
+  //checking if the blog owner same as the current user
+  if (!blog.blogOwner.equals(req.user._id)) {
+    return res
+      .status(403)
+      .json({ msg: "You are not authorized to update this blog" });
+  }
+
   const update = { ...req.body };
   delete update.author; //not able to update author data
 
-  const blog = await Blog.findOneAndUpdate({ _id: id }, update);
-  if (!blog) {
-    return res.status(400).json({ msg: "Blog not found" });
-  }
-  res.status(200).json(blog);
+  const blogUpdate = await Blog.findOneAndUpdate({ _id: id }, update);
+  res.status(200).json(blogUpdate);
 };
 
 //delete blog
@@ -61,9 +72,17 @@ module.exports.deleteBlog = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ msg: "Blog not found" });
   }
-  const blog = await Blog.findOneAndDelete({ _id: id });
+  const blog = await Blog.findById(id);
   if (!blog) {
-    return res.status(400).json({ msg: "Blog not found" });
+    return res.status(404).json({ msg: "Blog not found" });
   }
+  //checking if the blog owner same as the current user
+  if (!blog.blogOwner.equals(req.user._id)) {
+    return res
+      .status(403)
+      .json({ msg: "You are not authorized to delete this blog" });
+  }
+
+  await Blog.findOneAndDelete({ _id: id });
   res.status(200).json({ message: "Blog deleted successfully" });
 };

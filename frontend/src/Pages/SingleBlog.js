@@ -11,7 +11,7 @@ const SingleBlog = () => {
 
   //fetch the blog data
   const { blogs: blog, error } = useFeach(`/api/blog/${id}`);
-
+  console.log(user);
   //deleting the current blog
   const handleDelete = async () => {
     if (!user) {
@@ -27,12 +27,6 @@ const SingleBlog = () => {
     });
     if (article.ok) {
       navigate("/featuredblogs");
-    }
-  };
-
-  const handleEdit = () => {
-    if (!user) {
-      navigate("/login");
     }
   };
 
@@ -61,20 +55,19 @@ const SingleBlog = () => {
           <h4 className="text-center">
             {formatRelative(subDays(new Date(blog.createdAt), 3), new Date())}
           </h4>
-          <div className="text-right">
-            <button
-              className="bg-red-500 text-white rounded py-2 px-4 font-semibold"
-              onClick={handleDelete}
-            >
-              Delete
-            </button>
-            <button
-              className="bg-emerald-800 text-white rounded py-2 px-4 font-semibold ml-2"
-              onClick={handleEdit}
-            >
-              <Link to={`/editblog/${blog._id}`}>Edit</Link>
-            </button>
-          </div>
+          {user && blog.blogOwner === user.id && (
+            <div className="text-right">
+              <button
+                className="bg-red-500 text-white rounded py-2 px-4 font-semibold"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+              <button className="bg-emerald-800 text-white rounded py-2 px-4 font-semibold ml-2">
+                <Link to={`/editblog/${blog._id}`}>Edit</Link>
+              </button>
+            </div>
+          )}
           <p className="py-2">{blog.body}</p>
           <button className="bg-emerald-800 text-white rounded py-2 px-4 font-semibold">
             <Link to={"/featuredblogs"}>Back</Link>
