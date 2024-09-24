@@ -162,3 +162,41 @@ module.exports.addReview = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+//delete review
+module.exports.deleteReview = async (req, res) => {
+  const { id, reviewId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+  const blog = await Blog.findById(id).populate("reviews");
+  if (!blog) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(reviewId)) {
+    return res.status(404).json({ msg: "Review not found" });
+  }
+  const review = await Review.findById(reviewId);
+  if (!review) {
+    return res.status(404).json({ msg: "Review not found" });
+  }
+
+  //checking if the review owner same as the current user
+  if (!review.reviewOwner.equals(req.user._id)) {
+    return res
+      .status(403)
+      .json({ msg: "You are not authorized to delete this review" });
+  }
+
+  try {
+    //filter out the review from the blog
+    blog.reviews.filter((review) => review._id.toString() !== reviewId);
+    await blog.save();
+    //deleting the review
+    await review.findOneAndDelete({ _id: reviewId });
+    res.status(200).json({ message: "Blog deleted successfully" });
+  } catch (error) {
+    res.status(403).json({ msg: error.message });
+  }
+};

@@ -23,5 +23,6 @@ router.put("/:id/dislike", blogController.dislikeBlog);
 
 //review
 router.post("/:id/review", blogController.addReview);
+router.delete("/:id/review/:reviewId", blogController.deleteReview);
 
 module.exports = router;
