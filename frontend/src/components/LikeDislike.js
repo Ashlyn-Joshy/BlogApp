@@ -70,14 +70,14 @@ const LikeDislike = () => {
       {user && (
         <>
           <button className="text-red-500 py-2 px-4 " onClick={handleLike}>
-            <span class="material-symbols-outlined">thumb_up</span>{" "}
+            <span className="material-symbols-outlined">thumb_up</span>{" "}
             {like.length}
           </button>
           <button
             className="text-red-500 py-2 px-4 ml-3"
             onClick={handleDislike}
           >
-            <span class="material-symbols-outlined">thumb_down</span>{" "}
+            <span className="material-symbols-outlined">thumb_down</span>{" "}
             {dislike.length}
           </button>
         </>
