@@ -194,8 +194,8 @@ module.exports.deleteReview = async (req, res) => {
     blog.reviews.filter((review) => review._id.toString() !== reviewId);
     await blog.save();
     //deleting the review
-    await review.findOneAndDelete({ _id: reviewId });
-    res.status(200).json({ message: "Blog deleted successfully" });
+    await Review.findByIdAndDelete(reviewId);
+    res.status(200).json({ message: "review deleted successfully" });
   } catch (error) {
     res.status(403).json({ msg: error.message });
   }

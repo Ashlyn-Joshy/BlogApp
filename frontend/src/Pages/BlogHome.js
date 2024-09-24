@@ -28,18 +28,20 @@ const BlogHome = () => {
           className="bg-emerald-800 text-white py-2 px-4 rounded mt-2"
           onClick={handleWrite}
         >
-          Write
+          Write <span className="material-symbols-outlined">draw</span>
         </button>
         {blogs &&
           blogs.map((blog) => (
             <div
-              className="border border-lime-400 my-4 p-2 rounded"
+              className="border-b-2 border-green-600 my-4 p-2"
               key={blog._id}
             >
               <h1 className="font-semibold uppercase">{blog.title}</h1>
               <p className="line-clamp-3">{blog.body}</p>
               <button className="bg-emerald-800 text-white py-2 px-4 rounded mt-2">
-                <Link to={"/featuredblogs/" + blog._id}>Read Full Blog</Link>
+                <Link to={"/featuredblogs/" + blog._id}>
+                  <span className="material-symbols-outlined">read_more</span>
+                </Link>
               </button>
             </div>
           ))}

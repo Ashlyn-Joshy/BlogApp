@@ -31,7 +31,8 @@ const Navbar = () => {
                 className="text-white rounded bg-emerald-800 px-4 py-2 ml-2"
                 onClick={handleLogout}
               >
-                Log Out
+                Log Out{" "}
+                <span className="material-symbols-outlined">logout</span>
               </button>
             </>
           )}

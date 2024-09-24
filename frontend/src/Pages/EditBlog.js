@@ -93,13 +93,15 @@ const EditBlog = () => {
             className="bg-emerald-800 text-white rounded py-2 px-4 font-semibold"
             onClick={handleEdit}
           >
-            Edit
+            Edit <span className="material-symbols-outlined">edit_note</span>
           </button>
         </div>
       </form>
 
       <button className="bg-emerald-800 text-white rounded py-2 px-4 font-semibold">
-        <Link to={"/featuredblogs"}>Back</Link>
+        <Link to={"/featuredblogs"}>
+          <span className="material-symbols-outlined">keyboard_return</span>
+        </Link>
       </button>
     </div>
   );
