@@ -31,6 +31,12 @@ const blogSchema = new Schema(
         ref: "User",
       },
     ],
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
   },
   { timestamps: true }
 );

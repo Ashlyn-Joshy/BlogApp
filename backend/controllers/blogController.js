@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 //models
 const Blog = require("../models/blogModel");
+const Review = require("../models/reviewModel");
 
 //get all blogs
 module.exports.allBlog = async (req, res) => {
@@ -33,7 +34,7 @@ module.exports.singleBlog = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ msg: "Blog not found" });
   }
-  const blog = await Blog.findById(id);
+  const blog = await Blog.findById(id).populate("reviews");
   if (!blog) {
     return res.status(404).json({ msg: "Blog not found" });
   }
@@ -136,4 +137,27 @@ module.exports.dislikeBlog = async (req, res) => {
 
   await blog.save();
   res.status(200).json(blog);
+};
+
+//add review
+module.exports.addReview = async (req, res) => {
+  const { id } = req.params();
+  const { body } = req.body();
+  const reviewOwner = req.user._id;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+  const blog = await Blog.findById(id);
+  if (!blog) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+
+  try {
+    const newReview = await Review.create({ body, reviewOwner });
+    blog.reviews.push(newReview._id);
+    await blog.save();
+    res.status(200).json(blog);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
