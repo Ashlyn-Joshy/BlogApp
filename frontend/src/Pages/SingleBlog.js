@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatRelative, subDays } from "date-fns";
 import useFeach from "../Hooks/useFeach";
 import { useAuthContext } from "../Hooks/useAuthContext";
+import LikeDislike from "../components/LikeDislike";
 
 const SingleBlog = () => {
   const { id } = useParams();
@@ -11,7 +12,6 @@ const SingleBlog = () => {
 
   //fetch the blog data
   const { blogs: blog, error } = useFeach(`/api/blog/${id}`);
-  console.log(user);
   //deleting the current blog
   const handleDelete = async () => {
     if (!user) {
@@ -69,6 +69,7 @@ const SingleBlog = () => {
             </div>
           )}
           <p className="py-2">{blog.body}</p>
+          <LikeDislike />
           <button className="bg-emerald-800 text-white rounded py-2 px-4 font-semibold">
             <Link to={"/featuredblogs"}>Back</Link>
           </button>

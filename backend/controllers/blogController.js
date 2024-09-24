@@ -86,3 +86,54 @@ module.exports.deleteBlog = async (req, res) => {
   await Blog.findOneAndDelete({ _id: id });
   res.status(200).json({ message: "Blog deleted successfully" });
 };
+
+//like the blog
+module.exports.likeBlog = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+  const blog = await Blog.findById(id);
+  if (!blog) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+
+  //Remove user from dislikes if they had previously disliked
+  if (blog.blogDislikes.includes(req.user._id)) {
+    blog.blogDislikes.pull(req.user._id);
+  }
+
+  //toggle the likes
+  if (blog.blogLikes.includes(req.user._id)) {
+    blog.blogLikes.pull(req.user._id);
+  } else {
+    blog.blogLikes.push(req.user._id);
+  }
+  await blog.save();
+  res.status(200).json(blog);
+};
+
+module.exports.dislikeBlog = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+  const blog = await Blog.findById(id);
+  if (!blog) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+
+  //Remove user from likes if they had previously liked
+  if (blog.blogLikes.includes(req.user._id)) {
+    blog.blogLikes.pull(req.user._id);
+  }
+  //toggle the dislike
+  if (blog.blogDislikes.includes(req.user._id)) {
+    blog.blogDislikes.pull(req.user._id);
+  } else {
+    blog.blogDislikes.push(req.user._id);
+  }
+
+  await blog.save();
+  res.status(200).json(blog);
+};

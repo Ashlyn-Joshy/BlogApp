@@ -17,4 +17,8 @@ router.post("/", blogController.newBlog);
 router.put("/:id", blogController.updateBlog);
 router.delete("/:id", blogController.deleteBlog);
 
+//like and dislike functionality
+router.put("/:id/like", blogController.likeBlog);
+router.put("/:id/dislike", blogController.dislikeBlog);
+
 module.exports = router;
