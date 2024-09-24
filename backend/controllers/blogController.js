@@ -73,7 +73,7 @@ module.exports.deleteBlog = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ msg: "Blog not found" });
   }
-  const blog = await Blog.findById(id);
+  const blog = await Blog.findById(id).populate("reviews");
   if (!blog) {
     return res.status(404).json({ msg: "Blog not found" });
   }
@@ -84,8 +84,16 @@ module.exports.deleteBlog = async (req, res) => {
       .json({ msg: "You are not authorized to delete this blog" });
   }
 
-  await Blog.findOneAndDelete({ _id: id });
-  res.status(200).json({ message: "Blog deleted successfully" });
+  try {
+    // Delete all reviews related to the blog
+    await Review.deleteMany({ _id: { $in: blog.reviews } });
+    await Blog.findOneAndDelete({ _id: id });
+    res
+      .status(200)
+      .json({ message: "Blog and its reviews deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
 };
 
 //like the blog
