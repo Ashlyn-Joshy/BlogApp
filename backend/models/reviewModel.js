@@ -7,6 +7,10 @@ const reviewSchema = new Schema(
       type: String,
       required: true,
     },
+    author: {
+      type: String,
+      required: true,
+    },
     reviewOwner: {
       type: Schema.Types.ObjectId,
       ref: "User",

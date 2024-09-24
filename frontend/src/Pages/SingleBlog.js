@@ -4,6 +4,7 @@ import { formatRelative, subDays } from "date-fns";
 import useFeach from "../Hooks/useFeach";
 import { useAuthContext } from "../Hooks/useAuthContext";
 import LikeDislike from "../components/LikeDislike";
+import Review from "../components/Review";
 
 const SingleBlog = () => {
   const { id } = useParams();
@@ -70,6 +71,29 @@ const SingleBlog = () => {
           )}
           <p className="py-2">{blog.body}</p>
           <LikeDislike />
+          <Review />
+          {blog.reviews.length === 0 ? (
+            <p className="py-5 font-semibold">
+              There are no reviews available.
+            </p>
+          ) : (
+            <div className="mb-5 p-5">
+              {blog.reviews.map((review) => {
+                return (
+                  <div key={review._id} className="border p-2 rounded my-3">
+                    <h3 className="font-semibold">{review.author}</h3>
+                    <p className="text-xs">
+                      {formatRelative(
+                        subDays(new Date(review.createdAt), 3),
+                        new Date()
+                      )}
+                    </p>
+                    <p>{review.body}</p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
           <button className="bg-emerald-800 text-white rounded py-2 px-4 font-semibold">
             <Link to={"/featuredblogs"}>Back</Link>
           </button>

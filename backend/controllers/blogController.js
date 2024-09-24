@@ -141,8 +141,9 @@ module.exports.dislikeBlog = async (req, res) => {
 
 //add review
 module.exports.addReview = async (req, res) => {
-  const { id } = req.params();
-  const { body } = req.body();
+  const { id } = req.params;
+  const { body } = req.body;
+  const author = req.user.name;
   const reviewOwner = req.user._id;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ msg: "Blog not found" });
@@ -153,7 +154,7 @@ module.exports.addReview = async (req, res) => {
   }
 
   try {
-    const newReview = await Review.create({ body, reviewOwner });
+    const newReview = await Review.create({ body, reviewOwner, author });
     blog.reviews.push(newReview._id);
     await blog.save();
     res.status(200).json(blog);
