@@ -208,3 +208,74 @@ module.exports.deleteReview = async (req, res) => {
     res.status(403).json({ msg: error.message });
   }
 };
+
+//like the review in the blog
+module.exports.likeReview = async (req, res) => {
+  const { id, reviewId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+  const blog = await Blog.findById(id).populate("reviews");
+  if (!blog) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(reviewId)) {
+    return res.status(404).json({ msg: "Review not found" });
+  }
+  const review = await Review.findById(reviewId);
+  if (!review) {
+    return res.status(404).json({ msg: "Review not found" });
+  }
+
+  //Remove user from dislikes if they had previously disliked
+  if (review.reviewDislikes.includes(req.user._id)) {
+    review.reviewDislikes.pull(req.user._id);
+  }
+
+  //toggle the likes
+  if (review.reviewLikes.includes(req.user._id)) {
+    review.reviewLikes.pull(req.user._id);
+  } else {
+    review.reviewLikes.push(req.user._id);
+  }
+
+  await review.save();
+  await blog.save();
+  res.status(200).json(review);
+};
+
+//dislike the review in the blog
+module.exports.dislikeReview = async (req, res) => {
+  const { id, reviewId } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+  const blog = await Blog.findById(id).populate("reviews");
+  if (!blog) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(reviewId)) {
+    return res.status(404).json({ msg: "Review not found" });
+  }
+  const review = await Review.findById(reviewId);
+  if (!review) {
+    return res.status(404).json({ msg: "Review not found" });
+  }
+
+  //Remove user from likes if they had previously liked
+  if (review.reviewLikes.includes(req.user._id)) {
+    review.reviewLikes.pull(req.user._id);
+  }
+  //toggle the dislike
+  if (review.reviewDislikes.includes(req.user._id)) {
+    review.reviewDislikes.pull(req.user._id);
+  } else {
+    review.reviewDislikes.push(req.user._id);
+  }
+
+  await review.save();
+  await blog.save();
+  res.status(200).json(review);
+};
