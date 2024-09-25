@@ -162,7 +162,12 @@ module.exports.addReview = async (req, res) => {
   }
 
   try {
-    const newReview = await Review.create({ body, reviewOwner, author });
+    const newReview = await Review.create({
+      body,
+      reviewOwner,
+      author,
+      blogInfo: blog.id,
+    });
     blog.reviews.push(newReview._id);
     await blog.save();
     res.status(200).json(blog);
