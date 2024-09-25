@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 //models
 const Blog = require("../models/blogModel");
 const Review = require("../models/reviewModel");
+const User = require("../models/userModel");
 
 //get all blogs
 module.exports.allBlog = async (req, res) => {
@@ -22,6 +23,9 @@ module.exports.newBlog = async (req, res) => {
 
   try {
     const blog = await Blog.create({ title, author, body, blogOwner });
+    //saving the blog info to the user
+    await User.findByIdAndUpdate(blogOwner, { $push: { blogs: blog._id } });
+
     res.status(200).json(blog);
   } catch (error) {
     res.status(400).json({ msg: error.message });
@@ -87,6 +91,12 @@ module.exports.deleteBlog = async (req, res) => {
   try {
     // Delete all reviews related to the blog
     await Review.deleteMany({ _id: { $in: blog.reviews } });
+
+    //remove the blog info from the user
+    await User.findByIdAndUpdate(blog.blogOwner, {
+      $pull: { blogs: blog._id },
+    });
+
     await Blog.findOneAndDelete({ _id: id });
     res
       .status(200)
@@ -170,7 +180,13 @@ module.exports.addReview = async (req, res) => {
     });
     blog.reviews.push(newReview._id);
     await blog.save();
-    res.status(200).json(blog);
+
+    //saving the review info to the user
+    await User.findByIdAndUpdate(reviewOwner, {
+      $push: { reviews: newReview._id },
+    });
+
+    res.status(200).json(newReview);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -206,6 +222,11 @@ module.exports.deleteReview = async (req, res) => {
     //filter out the review from the blog
     blog.reviews.filter((review) => review._id.toString() !== reviewId);
     await blog.save();
+
+    //remove the review info from the user
+    await User.findByIdAndUpdate(review.reviewOwner, {
+      $pull: { reviews: review._id },
+    });
     //deleting the review
     await Review.findByIdAndDelete(reviewId);
     res.status(200).json({ message: "review deleted successfully" });

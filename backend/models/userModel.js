@@ -17,6 +17,18 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  blogs: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Blog",
+    },
+  ],
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Review",
+    },
+  ],
 });
 
 //static register method

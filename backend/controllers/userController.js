@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 
@@ -25,4 +26,17 @@ module.exports.userRegister = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+};
+
+//information about the user
+module.exports.userInfo = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ msg: "User not found" });
+  }
+  const user = await User.findById(id).populate("blogs").populate("reviews");
+  if (!user) {
+    return res.status(404).json({ msg: "User not found" });
+  }
+  res.status(200).json(user);
 };
