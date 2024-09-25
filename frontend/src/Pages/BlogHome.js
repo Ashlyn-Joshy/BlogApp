@@ -36,13 +36,20 @@ const BlogHome = () => {
               className="border-b-2 border-green-600 my-4 p-2"
               key={blog._id}
             >
-              <h1 className="font-semibold uppercase">{blog.title}</h1>
-              <p className="line-clamp-3">{blog.body}</p>
-              <button className="bg-emerald-800 text-white py-2 px-4 rounded mt-2">
+              <div className="flex justify-between">
+                <div>
+                  <Link to={"/featuredblogs/" + blog._id}>
+                    <h1 className="font-semibold uppercase text-green-800">
+                      {blog.title}
+                    </h1>
+                  </Link>
+                  <p className="font-semibold">By {blog.author}</p>
+                </div>
                 <Link to={"/featuredblogs/" + blog._id}>
-                  <span className="material-symbols-outlined">read_more</span>
+                  <span className="material-symbols-outlined">visibility</span>
                 </Link>
-              </button>
+              </div>
+              <p className="line-clamp-3">{blog.body}</p>
             </div>
           ))}
       </div>

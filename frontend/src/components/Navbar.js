@@ -18,7 +18,7 @@ const Navbar = () => {
       <div className="flex flex-row justify-between px-10">
         <div>
           <Link to={"/"}>
-            <h1 className="text-emerald-800 font-bold text-2xl">Blog App</h1>
+            <h1 className="text-emerald-800 font-bold text-2xl">Blog Sphere</h1>
           </Link>
         </div>
         <div>
