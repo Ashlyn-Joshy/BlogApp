@@ -14,6 +14,23 @@ const SingleBlog = () => {
 
   //fetch the blog data
   const { blogs: blog, error } = useFeach(`/api/blog/${id}`);
+
+  //fetching the user info
+  const handleUserInfo = async () => {
+    if (!blog) {
+      return;
+    }
+    const response = await fetch(`/api/user/${blog.blogOwner}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+    if (response.ok) {
+      navigate(`/user/${blog.blogOwner}`);
+    }
+  };
+
   //deleting the current blog
   const handleDelete = async () => {
     if (!user) {
@@ -75,7 +92,9 @@ const SingleBlog = () => {
             {blog.title}
           </h1>
           <h2 className="font-semibold text-center text-emerald-600">
-            {blog.author}
+            <button onClick={handleUserInfo} className="underline">
+              {blog.author}
+            </button>
           </h2>
           <h4 className="text-center">
             {formatRelative(subDays(new Date(blog.createdAt), 3), new Date())}

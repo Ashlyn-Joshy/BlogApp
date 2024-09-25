@@ -11,6 +11,7 @@ import EditBlog from "./Pages/EditBlog";
 import ErrorPage from "./Pages/ErrorPage";
 import Register from "./Pages/Register";
 import Login from "./Pages/Login";
+import UserInfo from "./Pages/UserInfo";
 
 const AppComponent = () => {
   return (
@@ -55,6 +56,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/user/:id",
+        element: <UserInfo />,
       },
     ],
   },
