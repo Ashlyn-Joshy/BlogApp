@@ -1,6 +1,7 @@
 require("dotenv").config();
 var express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 var app = express();
 
 //connecting to the router
@@ -9,6 +10,7 @@ var userRouter = require("./router/user");
 
 //middleware
 app.use(express.json());
+app.use(cors());
 
 app.use((req, res, next) => {
   console.log(req.method + ": " + req.path);
