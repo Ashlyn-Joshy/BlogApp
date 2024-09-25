@@ -9,6 +9,7 @@ const requireAuth = require("../middleware/requireAuth");
 
 router.get("/", blogController.allBlog);
 router.get("/:id", blogController.singleBlog);
+router.get("/:id/review/:reviewId", blogController.getReview);
 
 //authentication is needed
 router.use(requireAuth);

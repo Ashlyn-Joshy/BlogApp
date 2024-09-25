@@ -5,6 +5,7 @@ import useFeach from "../Hooks/useFeach";
 import { useAuthContext } from "../Hooks/useAuthContext";
 import LikeDislike from "../components/LikeDislike";
 import Review from "../components/Review";
+import ReviewLikeDislike from "../components/ReviewLikeDislike";
 
 const SingleBlog = () => {
   const { id } = useParams();
@@ -123,6 +124,7 @@ const SingleBlog = () => {
                       )}
                     </p>
                     <p>{review.body}</p>
+                    <ReviewLikeDislike reviewId={review._id} />
                   </div>
                 );
               })}

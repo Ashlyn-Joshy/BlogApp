@@ -279,3 +279,23 @@ module.exports.dislikeReview = async (req, res) => {
   await blog.save();
   res.status(200).json(review);
 };
+
+//view single review
+module.exports.getReview = async (req, res) => {
+  const { id, reviewId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ msg: "Blog not found" });
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(reviewId)) {
+    return res.status(404).json({ msg: "Review not found" });
+  }
+
+  const review = await Review.findById(reviewId);
+  if (!review) {
+    return res.status(404).json({ msg: "Review not found" });
+  }
+
+  res.status(200).json(review);
+};
